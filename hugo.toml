@@ -1,0 +1,103 @@
+baseURL = "https://example.com/"
+title = "Your Blog Name"
+theme = "PaperMod"
+languageCode = "en-us"
+defaultContentLanguage = "en"
+
+enableRobotsTXT = true
+buildDrafts = false
+buildFuture = false
+buildExpired = false
+
+pagination.pagerSize = 10
+
+[minify]
+disableXML = true
+minifyOutput = true
+
+[params]
+env = "production"
+title = "Your Blog Name"
+description = "Malware analysis, detection engineering, and reverse engineering notes."
+keywords = ["malware", "analysis", "detection", "security", "reverse engineering"]
+author = "Your Name"
+DateFormat = "January 2, 2006"
+defaultTheme = "auto"
+disableThemeToggle = false
+
+ShowReadingTime = true
+ShowShareButtons = false
+ShowPostNavLinks = true
+ShowBreadCrumbs = true
+ShowCodeCopyButtons = true
+ShowWordCount = true
+ShowRssButtonInSectionTermList = true
+UseHugoToc = true
+
+[params.homeInfoParams]
+Title = "Hey 👋"
+Content = "I'm a detection engineer learning malware analysis in public. Writeups, detection rules, and notes from the journey."
+
+[[params.socialIcons]]
+name = "github"
+url = "https://github.com/YOUR_USERNAME"
+
+[[params.socialIcons]]
+name = "rss"
+url = "index.xml"
+
+[params.assets]
+disableHLJS = true
+favicon = "/favicon.ico"
+
+[params.cover]
+hidden = false
+hiddenInList = false
+hiddenInSingle = false
+
+[params.fuseOpts]
+isCaseSensitive = false
+shouldSort = true
+location = 0
+distance = 1000
+threshold = 0.4
+minMatchCharLength = 0
+keys = ["title", "permalink", "summary", "content"]
+
+[[menu.main]]
+identifier = "posts"
+name = "Posts"
+url = "/posts/"
+weight = 10
+
+[[menu.main]]
+identifier = "archive"
+name = "Archive"
+url = "/archives/"
+weight = 20
+
+[[menu.main]]
+identifier = "tags"
+name = "Tags"
+url = "/tags/"
+weight = 30
+
+[[menu.main]]
+identifier = "search"
+name = "Search"
+url = "/search/"
+weight = 40
+
+[outputs]
+home = ["HTML", "RSS", "JSON"]
+
+[markup]
+[markup.highlight]
+codeFences = true
+guessSyntax = true
+lineNos = false
+noClasses = false
+style = "monokai"
+
+[markup.goldmark.renderer]
+unsafe = true
