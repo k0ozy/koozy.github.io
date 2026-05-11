@@ -1,5 +1,5 @@
 baseURL = "https://koozy.pages.dev"
-title = "Koozy's Writeups"
+title = "koozy.dev"
 theme = "PaperMod"
 languageCode = "en-us"
 defaultContentLanguage = "en"
@@ -17,7 +17,7 @@ minifyOutput = true
 
 [params]
 env = "production"
-title = "Koozy's Writeups"
+title = "koozy.dev"
 description = "Malware analysis, detection engineering, and reverse engineering notes."
 keywords = ["malware", "analysis", "detection", "security", "reverse engineering"]
 author = "Koozy"
