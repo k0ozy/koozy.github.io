@@ -1,5 +1,5 @@
-baseURL = "https://example.com/"
-title = "Your Blog Name"
+baseURL = "https://koozy.pages.dev"
+title = "Koozy's Writeups"
 theme = "PaperMod"
 languageCode = "en-us"
 defaultContentLanguage = "en"
@@ -17,10 +17,10 @@ minifyOutput = true
 
 [params]
 env = "production"
-title = "Your Blog Name"
+title = "Koozy's Writeups"
 description = "Malware analysis, detection engineering, and reverse engineering notes."
 keywords = ["malware", "analysis", "detection", "security", "reverse engineering"]
-author = "Your Name"
+author = "Koozy"
 DateFormat = "January 2, 2006"
 defaultTheme = "auto"
 disableThemeToggle = false
@@ -35,12 +35,12 @@ ShowRssButtonInSectionTermList = true
 UseHugoToc = true
 
 [params.homeInfoParams]
-Title = "Hey 👋"
+Title = "Hey"
 Content = "I'm a detection engineer learning malware analysis in public. Writeups, detection rules, and notes from the journey."
 
 [[params.socialIcons]]
 name = "github"
-url = "https://github.com/YOUR_USERNAME"
+url = "https://github.com/k0ozy"
 
 [[params.socialIcons]]
 name = "rss"
