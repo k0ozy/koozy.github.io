@@ -45,7 +45,7 @@ After confirming the file type, I am going to hash them and then search VirusTot
 
 ### Compilation Time
 I will use Detect it Easy (DiE) to view the compilation time of both files. The compilation time will give us an idea of when the executable was created although it can be changed. Due to the compilation time, it is worth noting that both of these files might be related.
-![Lab01-01.dll Compilation Time](dieexe2.png)
+![Lab01-01.dll Compilation Time](diedll1 1.png)
 ![Lab01-01.exe Compliation Time](dieexe1.png)
 
 ### Packing and Obfuscation
