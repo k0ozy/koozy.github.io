@@ -71,6 +71,12 @@ url = "/posts/"
 weight = 10
 
 [[menu.main]]
+identifier = "pma"
+name = "PMA Labs"
+url = "/pma/"
+weight = 15
+
+[[menu.main]]
 identifier = "archive"
 name = "Archive"
 url = "/archives/"
