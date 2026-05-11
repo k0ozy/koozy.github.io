@@ -1,5 +1,5 @@
 baseURL = "https://koozy.tech"
-title = "koozy.dev"
+title = "koozy.tech"
 theme = "PaperMod"
 languageCode = "en-us"
 defaultContentLanguage = "en"
@@ -17,7 +17,7 @@ minifyOutput = true
 
 [params]
 env = "production"
-title = "koozy.dev"
+title = "koozy.tech"
 description = "Malware analysis, detection engineering, and reverse engineering notes."
 keywords = ["malware", "analysis", "detection", "security", "reverse engineering"]
 author = "Koozy"
@@ -36,7 +36,7 @@ UseHugoToc = true
 
 [params.homeInfoParams]
 Title = "Hey"
-Content = "I'm a detection engineer learning malware analysis in public. Writeups, detection rules, and notes from the journey."
+Content = "I'm a detection engineer learning malware analysis. Writeups, detection rules, and notes from the journey."
 
 [[params.socialIcons]]
 name = "github"
