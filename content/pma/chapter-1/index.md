@@ -24,15 +24,15 @@ Chapter 1 within Practical Malware Analysis focuses on basic malware static anal
 4. Do any imports hint at what this malware does? If so, which imports are they?
 	- The .exe and .dll file suggest that there are functions with backdooring capabilities, networking, and manipulating files on the system.
 5. Are there any other files or host-based indicators that you could look for on infected systems?
-	- Examine Kerne132.dll
+	- Examine `Kerne132.dll`
 6. What network-based indicators could be used to find this malware on infected machines?
-	- IP Address 127.26.152.13
+	- IP Address `127.26.152.13`
 7. What would you guess is the purpose of these files?
 	- The .dll file is probably a backdoor of some kind and the .exe file is used to run the .dll
 
 ### Initial Triage
 
-Lab 1-1 presents two different files: Lab01-01.exe and Lab01-01.dll. The first thing I want to confirm is if the files are what they say they are. Running `file` against both confirms that both are PE32 executables.
+Lab 1-1 presents two different files: `Lab01-01.exe` and `Lab01-01.dll`. The first thing I want to confirm is if the files are what they say they are. Running `file` against both confirms that both are PE32 executables.
 ![File Command Output](lab1-1filecmd.png)
 
 ### Hashing and VirusTotal
@@ -60,17 +60,15 @@ Die shows all of this so we can check each indicator without leaving the tool.
 ![Linker/Compiler Information Lab01-01.dll](packeddll1.png)
 ![Entropy Information Lab01-01.dll](entropydll1.png)
 
-
 **Lab01-01.exe**
 ![Linker/Compiler Information Lab01-01.exe](packedexe1.png)
 ![Entropy Information Lab01-01.exe](entropyexe1.png)
-
 
 ### Import Review
 Reviewing the strings data gives an idea of what imports we will see in the files. All of the information can still be found within DiE but I am going to use PE-Bear this time to change it up. 
 The Lab01-01.dll file also doesn't have any interesting imports in `MSVCRT.dll`. Within `KERNEL32.dll` there are functions such as `CreateProcess` and `Sleep` that suggest it includes some type of backdoor capability. Also within the `WS2_32.dll`, there are 10 functions that are imported by ordinal. One way to view what these functions would be would be to load the .dll within PE bear and find out what the ordinals map to. In this case, the ordinals map to networking functions.
 
-The Lab01-01.exe file doesn't have any interesting imports in `MSVCRT.dll`, but within `KERNEL32.dll` there are functions for searching, opening and manipulating files. This suggests that the malware searches through the file system and that it can open and manipulate files.
+The `Lab01-01.exe` file doesn't have any interesting imports in `MSVCRT.dll`, but within `KERNEL32.dll` there are functions for searching, opening and manipulating files. This suggests that the malware searches through the file system and that it can open and manipulate files.
 
 **Lab01-01.dll**
 ![Imports Lab01-01.dll](importsdll1.png)
@@ -80,7 +78,6 @@ The Lab01-01.exe file doesn't have any interesting imports in `MSVCRT.dll`, but 
 **Lab01-01.exe**
 ![Imports Lab01-01.exe](importsexe1.png)
 
-
 ### Indicators
 If we review the strings from earlier after reviewing the imports there are a few things that stand out.  
 **Lab01-01.dll**
@@ -88,18 +85,44 @@ The strings in this dll show an IP Address, as well as `exec` and `sleep` comman
 ![Strings Lab01-01.dll](stringsdll1.png)  
 
 **Lab01-01.exe**
-There is a Kerne132 string that is made to look like Kernel32 as well as a .exe string. If this were going to be analyzed further, the Kerne132.dll file should be analyzed. Based off of the imports from the previous section it seems likely that the program is looking for .exe files on the host.
+There is a `Kerne132.dll` string that is made to look like `Kernel32.dll` as well as a .exe string. If this were going to be analyzed further, the `Kerne132.dll` file should be analyzed. Based off of the imports from the previous section it seems likely that the program is looking for .exe files on the host.
 ![Strings Lab01-01.exe](stringsexe1.png) 
 
 ---
 
 ## Lab 1-2
 1. Upload the file to VT and view the reports. Does the file match any antivirus signals?
-	1. https://www.virustotal.com/gui/file/c876a332d7dd8da331cb8eee7ab7bf32752834d4b2b54eaa362674a2a48f64a6
+	- Yes. There are multiple AV hits on VirusTotal
 2. Are there any indications that the file is packed or obfuscated? If it is, unpack it
+	- Yes. The executable was packed using UPX.
 3. Do any imports hint at the program's functionality?
+	- The program creates a service and connects to the internet
 4. What host or network based indicators could be used to identify this malware on infected machines?
+	- MalService and hxxp://www.malwareanalysisbook[.]com
 
+### Initial Triage
+For this lab, the triage methodology remains the same so I won't rehash that for every lab. More detail will be provided if needed. The file was identified as a PE32 executable, hashed and uploaded to VirusTotal.  
+
+![AV Hits for Lab01-02.exe](vtexelab1-2.png)
+	**Lab01-02.exe** [VirusTotal Report]([https://www.virustotal.com/gui/file/58898bd42c5bd3bf9b1389f0eee5b39cd59180e8370eb9ea838a0b327bd6fe47](https://www.virustotal.com/gui/file/c876a332d7dd8da331cb8eee7ab7bf32752834d4b2b54eaa362674a2a48f64a6))
+
+
+### Packing and Obfuscation
+Opening the file within DiE shows that the executable has been packed using UPX. UPX is a common packer and can be downloaded on [GitHub](https://github.com/upx/upx/releases/tag/v5.1.1). After downloading the file you can decompress it with `upx.exe -d [filename]`
+
+![Linker/Compiler Information Lab01-02.exe](packedexe1-2.png)
+![UPX Unpack](upxunpack1-2.png)
+
+### Import Review and Indicators
+There are a couple of interesting strings in this executable: `MalService` and `hxxp://www.malwareanalysisbook[.]com`.  The imports from `ADVAPI32.dll` tell us that this executable creates a service and the imports from `WININET.dll` show that it connects to the internet. When combining these, it is likely that `MalService` is the service that is created and the url from above is used with by `InternetOpenURL`.
+
+![Strings Lab01-02.exe](stringslab1-2.png)
+![Imports 1 Lab01-02.exe](impotslab1-2-1.png)
+![Imports 2 Lab01-02.exe](impotslab1-2-2.png)
+
+
+
+---
 ## Lab 1-3
 1. Upload the file to VT and view the reports. Does the file match any antivirus signals?
 	1. https://www.virustotal.com/gui/file/7983a582939924c70e3da2da80fd3352ebc90de7b8c4c427d484ff4f050f0aec
@@ -107,6 +130,14 @@ There is a Kerne132 string that is made to look like Kernel32 as well as a .exe 
 3. 3. Do any imports hint at the program's functionality?
 4. What host or network based indicators could be used to identify this malware on infected machines?
 
+
+
+
+
+
+
+
+---
 ## Lab 1-4
 1. Upload the file to VT and view the reports. Does the file match any antivirus signals?
 	1. https://www.virustotal.com/gui/file/0fa1498340fca6c562cfa389ad3e93395f44c72fd128d7ba08579a69aaf3b126
