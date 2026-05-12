@@ -24,6 +24,7 @@ author = "Koozy"
 DateFormat = "January 2, 2006"
 defaultTheme = "auto"
 disableThemeToggle = false
+mainSections = ["posts", "pma"]
 
 ShowReadingTime = true
 ShowShareButtons = false
