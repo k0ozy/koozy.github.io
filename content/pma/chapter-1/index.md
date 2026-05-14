@@ -104,7 +104,7 @@ There is a `Kerne132.dll` string that is made to look like `Kernel32.dll` as wel
 For this lab, the triage methodology remains the same so I won't rehash that for every lab. More detail will be provided if needed. The file was identified as a PE32 executable, hashed and uploaded to VirusTotal.  
 
 ![AV Hits for Lab01-02.exe](vtexelab1-2.png)
-	**Lab01-02.exe** [VirusTotal Report]([https://www.virustotal.com/gui/file/58898bd42c5bd3bf9b1389f0eee5b39cd59180e8370eb9ea838a0b327bd6fe47](https://www.virustotal.com/gui/file/c876a332d7dd8da331cb8eee7ab7bf32752834d4b2b54eaa362674a2a48f64a6))
+	**Lab01-02.exe** [VirusTotal Report](https://www.virustotal.com/gui/file/c876a332d7dd8da331cb8eee7ab7bf32752834d4b2b54eaa362674a2a48f64a6)
 
 
 ### Packing and Obfuscation
@@ -125,28 +125,72 @@ There are a couple of interesting strings in this executable: `MalService` and `
 ---
 ## Lab 1-3
 1. Upload the file to VT and view the reports. Does the file match any antivirus signals?
-	1. https://www.virustotal.com/gui/file/7983a582939924c70e3da2da80fd3352ebc90de7b8c4c427d484ff4f050f0aec
-2. Are there any indications that this file is packed or obfuscated?  If it is, unpack it
-3. 3. Do any imports hint at the program's functionality?
+	- Yes. There are multiple AV hits on VirusTotal
+2. Are there any indications that this file is packed or obfuscated?
+	- Yes. The raw size and virtual size are different, there are only `LoadLibraryA` and `GetProcAddress` imports, and PEiD shows that it was packed with FSG.
+3. Do any imports hint at the program's functionality?
+	- We cannot know until the file is unpacked
 4. What host or network based indicators could be used to identify this malware on infected machines?
+	- We cannot know until the file is unpacked
+
+### Initial Triage
+
+![AV Hits for Lab01-03](vtexe3.png)
+	**Lab01-03.exe** [VirusTotal Report](https://www.virustotal.com/gui/file/7983a582939924c70e3da2da80fd3352ebc90de7b8c4c427d484ff4f050f0aec)
+
+### Packing and Obfuscation
+It also shows that there is some sort of packer that was used but it doesn't know what one. However, if we use PEiD it states that it is packed with FSG. 
+
+![Strings Lab01-03.exe](stringsexe1-3.png)
+![Linker/Compiler Information Lab01-03.exe](dieexe1-3.png)
+![Linker/Compiler Information PEiD](peid1-3.png)
 
 
+### Import Review and Indicators
+Opening the file within DiE shows  `LoadLibraryA` and `GetProcAddress` are the only strings and imports that are seen. These two imports are needed for the packer's unpacking stub to dynamically resolve everything else from the OS after unpacking the import table into memory.
 
-
-
-
+![Imports Lab01-03.exe](importslab1-3.png)
 
 
 ---
 ## Lab 1-4
 1. Upload the file to VT and view the reports. Does the file match any antivirus signals?
-	1. https://www.virustotal.com/gui/file/0fa1498340fca6c562cfa389ad3e93395f44c72fd128d7ba08579a69aaf3b126
+	- Yes. There are multiple AV hits on VirusTotal
 2. Are there any indications that the file is packed or obfuscated? If it is, unpack it
+	- No
 3. When was this program compiled?
+	- 2019-08-30 15:26:59
 4. Do any imports hint at the program's functionality?
+	- This program appears to download a file from a website, loads data from the resource section of the PE file, writes to disk and executes the file.
 5. What host or network based indicators could be used to identify this malware on infected machines?
+	- `\system32\wupdmgr.exe` and `www[.]practicalmalwareanalysis[.]com/updater[.]exe`
 6. Examine the resource in the resource section, what can we learn from this resource?
+	- The executable is a downloader program that appears to download additional malware
+
+### Initial Triage
+
+![AV Hits for Lab01-04](vtexe4.png)
+	**Lab01-04.exe** [VirusTotal Report](https://www.virustotal.com/gui/file/0fa1498340fca6c562cfa389ad3e93395f44c72fd128d7ba08579a69aaf3b126)
+
+### Packing and Obfuscation
+There is no indication that the program is packed. 
+
+![Linker/Compiler Information Lab01-04.exe](packedexe1-4.png)
 
 
+### Import Review and Indicators
+There are some interesting strings that are found when reviewing the file. One being `www[.]practicalmalwareanalysis[.]com/updater[.]exe` which probably holds malicious code to be downloaded. It also includes `\system32\wupdmgr.exe`.   The imports from `advapi32.dll` suggests the program does something with permissions and the imports from `kernel32.dll` tells us the program loads data from the resource section, writes a file to disk, and executes the file. We can also see from the DiE image above, that there is a PE32 resource file in the resource section. The `GetWindowsDirectory` could be pointing to `\system32\wupdmgr` that was seen in the strings export. 
 
-7. {{< figure src="" alt="" caption="" width="0" >}}
+Resource Hacker can be used to save the file that was located in the resource section.
+
+**Lab01-04.exe**
+![Strings Lab01-04.exe](stringsexe1-4.png)
+![Imports 1 Lab01-04.exe](importsexe1-3.png)
+![Imports 2 Lab01-04.exe](importsexe1-3-2.png)
+![ResourceHacker](reshacker.png)
+
+**Extracted Bin**
+![FileInfoBin](diebin.png)
+![StringsBin](binstrings.png)
+
+{{< figure src="" alt="" caption="" width="0" >}}
