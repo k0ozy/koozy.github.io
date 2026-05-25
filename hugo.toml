@@ -39,6 +39,11 @@ UseHugoToc = true
 Title = "Hey"
 Content = "I'm a detection engineer learning malware analysis. Writeups, detection rules, and notes from the journey."
 
+[params.label]
+text = "koozy.tech"
+icon = "/koozy.png"
+iconHeight = 35
+
 [[params.socialIcons]]
 name = "github"
 url = "https://github.com/k0ozy"
